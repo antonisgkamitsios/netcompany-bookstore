@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { RouteObject } from 'react-router-dom';
-import { renderBreadCrumbHook } from '../../../test/utilities';
+import { renderBreadCrumbHook } from '~/test/utilities';
 
 const testRoutes: RouteObject[] = [
   {
