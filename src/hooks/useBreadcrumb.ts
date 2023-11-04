@@ -2,11 +2,11 @@ import { RouteObject, matchPath, useLocation } from 'react-router-dom';
 
 // todo add more types that will help with breadcrumb
 type FlattRoute = {
-  path?: string;
+  path: string;
   id?: string;
 };
 
-type BreadCrumbRoute = { active: boolean } & FlattRoute;
+export type BreadCrumbRoute = { active: boolean } & FlattRoute;
 
 // basic function that manages to flatten the array of children and also append the the parent's path to the child
 function flattenRoutes(routes: RouteObject[], flattRoutes: FlattRoute[], prefix = '') {
@@ -49,7 +49,6 @@ function useBreadCrumb(routes: RouteObject[]) {
   const breadCrumbRoutes = flattRoutes
     .map((route) => {
       const match = matchPath({ path: route.path || '', end: false }, location.pathname);
-      // console.log(match);
 
       // simply return null if we don't have a match in the urls and at the end the nulls will be filtered out
       if (match === null) {
