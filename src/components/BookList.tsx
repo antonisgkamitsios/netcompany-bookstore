@@ -6,8 +6,6 @@ function BookList({ search }: { search: string }) {
   // todo: add search as argument in query hook to extract the filtering logic
   const books = useBooks();
 
-  console.log(search);
-
   if (books.isLoading) {
     return (
       <Stack direction="row" flexWrap="wrap" gap={2} maxWidth={1400} margin="auto">
@@ -29,7 +27,7 @@ function BookList({ search }: { search: string }) {
   );
 
   return (
-    <Stack direction="row" flexWrap="wrap" gap={2} maxWidth={1400} margin="auto">
+    <Stack direction="row" flexWrap="wrap" gap={2} justifyContent="center">
       {filteredBooks?.length === 0 ? (
         <Alert severity="info">No books found matching the current filters</Alert>
       ) : (
