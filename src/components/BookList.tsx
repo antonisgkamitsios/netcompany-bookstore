@@ -2,8 +2,11 @@ import { Alert, Skeleton, Stack } from '@mui/material';
 import { useBooks } from '~/queries/books';
 import { BookCard } from './BookCard';
 
-function BookList() {
+function BookList({ search }: { search: string }) {
+  // todo: add search as argument in query hook to extract the filtering logic
   const books = useBooks();
+
+  console.log(search);
 
   if (books.isLoading) {
     return (
@@ -21,11 +24,17 @@ function BookList() {
     );
   }
 
+  const filteredBooks = books.data?.filter(
+    (book) => book.title.toLowerCase().includes(search) || book.author.toLowerCase().includes(search)
+  );
+
   return (
     <Stack direction="row" flexWrap="wrap" gap={2} maxWidth={1400} margin="auto">
-      {books.data?.map((book) => (
-        <BookCard key={book.id} book={book} />
-      ))}
+      {filteredBooks?.length === 0 ? (
+        <Alert severity="info">No books found matching the current filters</Alert>
+      ) : (
+        filteredBooks?.map((book) => <BookCard key={book.id} book={book} />)
+      )}
     </Stack>
   );
 }

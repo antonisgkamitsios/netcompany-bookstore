@@ -3,4 +3,13 @@ function findUnique<T, K extends keyof T>(data: T[], key: K) {
   return result;
 }
 
-export { findUnique };
+function debounceFn(delay: number) {
+  let timeout: NodeJS.Timeout;
+
+  return function debounce(callback: () => void) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => callback(), delay);
+  };
+}
+
+export { findUnique, debounceFn };
