@@ -11,22 +11,19 @@ export type BreadCrumbRoute = { active: boolean } & FlattRoute;
 // basic function that manages to flatten the array of children and also append the the parent's path to the child
 function flattenRoutes(routes: RouteObject[], flattRoutes: FlattRoute[], prefix = '') {
   routes.forEach((route) => {
-    // adjust prefixes and populate array
     let pathToAdd = route.path || '';
 
-    // if we are about to add a route and the prefix doesn't end with "/" and the pathTo add does't start with "/" then we add it
+    // we want to add only paths that are no empty or don't contain the wild card
+    if (pathToAdd.length > 0 && pathToAdd !== '*') {
+      // if path starts with '/' remove it
+      if (pathToAdd.startsWith('/')) {
+        pathToAdd = pathToAdd.slice(1);
+      }
+      // if prefix doesn't end with '/' add it
+      if (!prefix.endsWith('/')) {
+        pathToAdd = `/${pathToAdd}`;
+      }
 
-    // remove the starting "/" if it exists and if we are not in the root ("/")
-    if (pathToAdd !== '/' && pathToAdd.startsWith('/')) {
-      pathToAdd = pathToAdd.slice(1);
-    }
-
-    if (prefix.length > 0 && !prefix.endsWith('/')) {
-      pathToAdd = `/${pathToAdd}`;
-    }
-
-    // we don't want to add in the array routes with no path
-    if ((route.path?.length || 0) > 0 && pathToAdd !== '*') {
       flattRoutes.push({ id: route.id, path: prefix + pathToAdd });
     }
 

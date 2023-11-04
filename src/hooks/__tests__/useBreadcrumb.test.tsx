@@ -14,7 +14,7 @@ const testRoutes: RouteObject[] = [
         children: [
           { path: '/child1', id: 'Child1', element: <>LOL</> },
           {
-            path: 'child2',
+            path: '/child2',
             id: 'Child2',
             element: <>LOL</>,
             children: [{ path: 'inner-child', id: 'InnerChild', element: <></> }],
