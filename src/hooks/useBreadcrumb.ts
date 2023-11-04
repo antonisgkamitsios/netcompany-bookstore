@@ -26,7 +26,7 @@ function flattenRoutes(routes: RouteObject[], flattRoutes: FlattRoute[], prefix 
     }
 
     // we don't want to add in the array routes with no path
-    if (pathToAdd.length > 0) {
+    if ((route.path?.length || 0) > 0 && pathToAdd !== '*') {
       flattRoutes.push({ id: route.id, path: prefix + pathToAdd });
     }
 

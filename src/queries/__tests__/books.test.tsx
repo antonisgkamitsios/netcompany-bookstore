@@ -23,7 +23,7 @@ it('should fetch all the books', async () => {
   const { result } = renderQueryHook(() => useBooks());
   await waitFor(() => expect(result.current.isSuccess).toBe(true));
   dummyBooks.books.forEach((book) => {
-    expect(result.current.data?.books).toEqual(expect.arrayContaining([expect.objectContaining(book)]));
+    expect(result.current.data).toEqual(expect.arrayContaining([expect.objectContaining(book)]));
   });
 });
 
@@ -32,7 +32,7 @@ it('should fetch the correct book', async () => {
   await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
   // here we are taking advantage of the auto id that mirage is providing. The book with id "1" will be the first in the array
-  expect(result.current.data?.book).toEqual(expect.objectContaining(dummyBooks.books[0]));
+  expect(result.current.data).toEqual(expect.objectContaining(dummyBooks.books[0]));
 });
 
 it('should delete the book', async () => {
@@ -51,9 +51,7 @@ it('should delete the book', async () => {
   await waitFor(() => expect(booksResult.current.isSuccess).toBe(true));
 
   // expect the books array not to contain the first element of the dummy books data
-  expect(booksResult.current.data?.books).not.toEqual(
-    expect.arrayContaining([expect.objectContaining(dummyBooks.books[0])])
-  );
+  expect(booksResult.current.data).not.toEqual(expect.arrayContaining([expect.objectContaining(dummyBooks.books[0])]));
 });
 
 it('should update a book', async () => {
@@ -72,7 +70,7 @@ it('should update a book', async () => {
 
   await waitFor(() => expect(bookResult.current.isSuccess).toBe(true));
 
-  expect(bookResult.current.data?.book).toEqual(expect.objectContaining(dataToUpdate));
+  expect(bookResult.current.data).toEqual(expect.objectContaining(dataToUpdate));
 });
 
 it('should create a book', async () => {
@@ -96,9 +94,9 @@ it('should create a book', async () => {
   await waitFor(() => expect(result.current.isSuccess).toBe(true));
   expect(result.current.data?.book).toEqual(expect.objectContaining(bookToCreate));
 
-  const response = result.current.data;
+  const response = result.current.data?.book;
 
-  const { result: bookResult } = renderQueryHook(() => useBook(response?.book.id || ''));
+  const { result: bookResult } = renderQueryHook(() => useBook(response?.id || ''));
   await waitFor(() => expect(bookResult.current.isSuccess).toBe(true));
 
   expect(bookResult.current.data).toEqual(response);

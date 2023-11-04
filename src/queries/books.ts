@@ -1,6 +1,7 @@
 import { QueryFunctionContext, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Book } from '../types';
+import { findUnique } from '~/utils/utilities';
 
 function fetchBooks(): Promise<{ books: Book[] }> {
   return axios.get('/api/books').then(({ data }) => data);
@@ -26,11 +27,11 @@ function updateBook(id: string, payload: Partial<Book>) {
 }
 
 function useBooks() {
-  return useQuery({ queryKey: [{ scope: 'books' }], queryFn: fetchBooks });
+  return useQuery({ queryKey: [{ scope: 'books' }], queryFn: fetchBooks, select: (data) => data.books });
 }
 
 function useBook(id: string) {
-  return useQuery({ queryKey: [{ scope: 'books', id }], queryFn: fetchBook });
+  return useQuery({ queryKey: [{ scope: 'books', id }], queryFn: fetchBook, select: (data) => data.book });
 }
 
 function useCreateBook() {
@@ -64,4 +65,28 @@ function useUpdateBook(id: string) {
   });
 }
 
-export { useBooks, useBook, useCreateBook, useDeleteBook, useUpdateBook };
+// find all the unique publishers
+function usePublishers() {
+  return useQuery({
+    queryKey: [{ scope: 'books', entity: 'publishers' }],
+    queryFn: fetchBooks,
+    select: (data) => {
+      const ret = findUnique(data.books, 'publisher');
+      return ret.map((p, index) => ({ id: index + 1, publisher: p }));
+    },
+  });
+}
+
+// find all the unique authors
+function useAuthors() {
+  return useQuery({
+    queryKey: [{ scope: 'books', entity: 'publishers' }],
+    queryFn: fetchBooks,
+    select: (data) => {
+      const ret = findUnique(data.books, 'author');
+      return ret.map((a, index) => ({ id: index + 1, author: a }));
+    },
+  });
+}
+
+export { useBooks, usePublishers, useBook, useCreateBook, useDeleteBook, useUpdateBook, useAuthors };

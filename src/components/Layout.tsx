@@ -12,7 +12,9 @@ function Layout({ children }: PropsWithChildren) {
           Bookstore
         </Typography>
       </AppBar>
-      <Box sx={{ mt: `${height}px` }}>{children}</Box>
+      <Box sx={{ mt: `${height}px`, mx: 2, overflow: 'hidden', minHeight: `calc(100vh - ${height}px )` }}>
+        {children}
+      </Box>
     </>
   );
 }
