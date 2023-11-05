@@ -1,5 +1,5 @@
-import { Box, Divider, Typography, Link as MuiLink } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Box, Divider, Typography, Link as MuiLink } from '@mui/material';
 
 function Home() {
   return (

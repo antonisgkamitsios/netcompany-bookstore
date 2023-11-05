@@ -1,6 +1,7 @@
-import { AppBar, Box, Typography } from '@mui/material';
-import { useStateRef } from '../hooks/useStateRef';
 import { PropsWithChildren } from 'react';
+import { AppBar, Box, Typography } from '@mui/material';
+
+import { useStateRef } from '../hooks/useStateRef';
 
 function Layout({ children }: PropsWithChildren) {
   const [ref, height] = useStateRef((node) => node.getBoundingClientRect().height);

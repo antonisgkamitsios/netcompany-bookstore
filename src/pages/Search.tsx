@@ -1,8 +1,11 @@
-import { Box, Divider, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
+import { Stack, Typography } from '@mui/material';
+
 import { BookList } from '~/components/BookList';
 import { Filters } from '~/components/Filters';
 import { SearchInput } from '~/components/SearchInput';
+
+import { FilterProvider } from '~/contexts/FilterProvider';
 
 function Search() {
   const [search, setSearch] = useState('');
@@ -13,14 +16,15 @@ function Search() {
         Search your book
       </Typography>
 
-      <Box sx={{ width: 'min(1248px, 100%)' }} margin="auto">
+      <Stack gap={2} sx={{ width: 'min(1248px, 100%)' }} margin="auto">
         <SearchInput search={search} setSearch={setSearch} />
 
-        <Filters />
-        <Divider sx={{ my: 2 }} />
+        <FilterProvider>
+          <Filters />
 
-        <BookList search={search} />
-      </Box>
+          <BookList search={search} />
+        </FilterProvider>
+      </Stack>
     </Stack>
   );
 }

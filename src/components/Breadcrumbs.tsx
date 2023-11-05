@@ -1,6 +1,7 @@
-import { Breadcrumbs as MuiBreadCrumbs, Link as MuiLink, Typography } from '@mui/material';
-import { BreadCrumbRoute } from '../hooks/useBreadcrumb';
 import { Link } from 'react-router-dom';
+import { Breadcrumbs as MuiBreadCrumbs, Link as MuiLink, Typography } from '@mui/material';
+
+import { BreadCrumbRoute } from '../hooks/useBreadcrumb';
 
 function BreadCrumbs({ routes }: { routes: BreadCrumbRoute[] }) {
   return (

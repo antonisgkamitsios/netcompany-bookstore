@@ -1,10 +1,15 @@
 import { Alert, Skeleton, Stack } from '@mui/material';
-import { useBooks } from '~/queries/books';
 import { BookCard } from './BookCard';
+
+import { useBooks } from '~/queries/books';
+
+import { useFilters } from '~/contexts/FilterProvider';
 
 function BookList({ search }: { search: string }) {
   // todo: add search as argument in query hook to extract the filtering logic
   const books = useBooks();
+
+  const filters = useFilters();
 
   if (books.isLoading) {
     return (
@@ -22,9 +27,23 @@ function BookList({ search }: { search: string }) {
     );
   }
 
-  const filteredBooks = books.data?.filter(
-    (book) => book.title.toLowerCase().includes(search) || book.author.toLowerCase().includes(search)
-  );
+  // filtering idea, can handle multiple steps (search + filters etc)
+  const filteredBooks = books.data?.filter((book) => {
+    let display = true;
+    if (search) {
+      display = (display && book.title.toLowerCase().includes(search)) || book.author.toLowerCase().includes(search);
+    }
+    if (filters.author) {
+      display = display && book.author === filters.author;
+    }
+
+    if (filters.publisher) {
+      display = display && book.publisher === filters.publisher;
+    }
+
+    // by checking every time the "display &&" we are making sure every previous statement is being met
+    return display;
+  });
 
   return (
     <Stack direction="row" flexWrap="wrap" gap={2} justifyContent="center">

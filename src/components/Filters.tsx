@@ -1,19 +1,31 @@
-import TuneIcon from '@mui/icons-material/Tune';
 import { Alert, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
-import { useState } from 'react';
+import TuneIcon from '@mui/icons-material/Tune';
+
+import { useFilters, useSetFilters } from '~/contexts/FilterProvider';
+
 import { useAuthors, usePublishers } from '~/queries/books';
 
-function Filter<T extends { id: number; [key: string]: string | number }>({
-  label,
-  name,
-  isLoading,
-  options,
-}: {
+import { Filters as FiltersType } from '~/types';
+
+type FilterWithId = Partial<{
+  [key in keyof FiltersType]: string | undefined;
+}> & { id: number };
+
+type FilterProps<T extends FilterWithId> = {
   label: string;
-  name: keyof T & string;
+  name: keyof FiltersType;
   isLoading: boolean;
   options: T[];
-}) {
+};
+
+function Filter<T extends FilterWithId>({ label, name, isLoading, options }: FilterProps<T>) {
+  const filters = useFilters();
+  const setFilters = useSetFilters();
+
+  const handleChange = (e: SelectChangeEvent) => {
+    setFilters((prevFilters) => ({ ...prevFilters, [e.target.name]: e.target.value }));
+  };
+
   return (
     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
       <InputLabel id={`select-label-${label}`}>{label}</InputLabel>
@@ -24,9 +36,8 @@ function Filter<T extends { id: number; [key: string]: string | number }>({
         id={`select-label-${label}`}
         label={label}
         name={name}
-        onChange={(e) => {
-          console.log(e.target.value);
-        }}
+        value={filters[name] || ''}
+        onChange={handleChange}
       >
         <MenuItem value="">
           <em>None</em>
@@ -41,24 +52,14 @@ function Filter<T extends { id: number; [key: string]: string | number }>({
   );
 }
 
-type Filters = {
-  author?: string;
-  publisher?: string;
-};
 function Filters() {
   const publishers = usePublishers();
 
   const authors = useAuthors();
 
-  const [filters, setFilters] = useState<Filters>(() => ({ author: undefined, publisher: undefined }));
-
   if (publishers.error instanceof Error || authors.error instanceof Error) {
     return <Alert severity="error">Something went wrong</Alert>;
   }
-
-  const handleChange = (e: SelectChangeEvent<string>) => {
-    setFilters((old) => ({ ...old, [e.target.name]: e.target.value }));
-  };
 
   return (
     <Stack direction="row" gap={1} alignItems="center">

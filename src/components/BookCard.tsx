@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom';
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
+
 import { Book } from '~/types';
 
 import bookImage from '~/assets/book-placeholder.png';
-import { Link } from 'react-router-dom';
 
 type BookCardProps = {
   book: Book;

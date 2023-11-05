@@ -1,9 +1,11 @@
 import { Outlet } from 'react-router-dom';
-import { Layout } from '../components/Layout';
-import { useBreadCrumb } from '../hooks/useBreadcrumb';
-import { routes } from '../App';
-import { BreadCrumbs } from '../components/Breadcrumbs';
 import { Box } from '@mui/material';
+
+import { Layout } from '../components/Layout';
+import { BreadCrumbs } from '../components/Breadcrumbs';
+import { routes } from '../App';
+
+import { useBreadCrumb } from '../hooks/useBreadcrumb';
 
 function Root() {
   const flattRoutes = useBreadCrumb(routes);

@@ -10,3 +10,8 @@ export type Book = {
   description: string;
   website: string;
 };
+
+export type Filters = {
+  author: string | undefined;
+  publisher: string | undefined;
+};
