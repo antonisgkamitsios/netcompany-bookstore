@@ -8,11 +8,14 @@ import { MemoryRouter } from 'react-router-dom';
 import { PropsWithChildren } from 'react';
 
 import { dummyBooks } from '~/test/dummyData';
+import { FilterProvider } from '~/contexts/FilterProvider';
 
 function wrapper({ children }: PropsWithChildren) {
   return (
     <QueryClientWrapper>
-      <MemoryRouter>{children}</MemoryRouter>
+      <FilterProvider>
+        <MemoryRouter>{children}</MemoryRouter>
+      </FilterProvider>
     </QueryClientWrapper>
   );
 }
@@ -110,6 +113,6 @@ it('should display correct books when author filter is applied', async () => {
   dummyBooks.books.forEach((book) => expect(screen.getByText(book.title)).toBeInTheDocument());
 });
 
-it.todo('should display the correct values when search + filters are applied', async() => {
+it.todo('should display the correct values when search + filters are applied', async () => {
   expect.hasAssertions();
 });
