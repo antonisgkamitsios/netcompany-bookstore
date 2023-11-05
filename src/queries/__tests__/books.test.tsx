@@ -1,23 +1,11 @@
 import { waitFor } from '@testing-library/react';
-import { afterEach, beforeEach, expect, it } from 'vitest';
+import { expect, it } from 'vitest';
 import { useBook, useBooks, useCreateBook, useDeleteBook, useUpdateBook } from '../books';
 
 import { renderQueryHook } from '~/test/utilities';
-import { makeServer } from '~/server';
 import { dummyBooks } from '~/test/dummyData';
 import { act } from 'react-dom/test-utils';
 import { Book } from '~/types';
-
-let server: ReturnType<typeof makeServer>;
-
-beforeEach(() => {
-  server = makeServer();
-  server.logging = false;
-});
-
-afterEach(() => {
-  server.shutdown();
-});
 
 it('should fetch all the books', async () => {
   const { result } = renderQueryHook(() => useBooks());
