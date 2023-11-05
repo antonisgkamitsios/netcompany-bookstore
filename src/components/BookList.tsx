@@ -13,7 +13,7 @@ function BookList({ search }: { search: string }) {
 
   if (books.isLoading) {
     return (
-      <Stack direction="row" flexWrap="wrap" gap={2} maxWidth={1400} margin="auto">
+      <Stack data-testid="loading" direction="row" flexWrap="wrap" gap={2} maxWidth={1400} margin="auto">
         {[...Array(8)].map((_, index) => (
           <Skeleton key={index} variant="rectangular" width={300} height={300} />
         ))}
@@ -46,9 +46,11 @@ function BookList({ search }: { search: string }) {
   });
 
   return (
-    <Stack direction="row" flexWrap="wrap" gap={2} justifyContent="center">
+    <Stack data-testid="book-list" direction="row" flexWrap="wrap" gap={2} justifyContent="center">
       {filteredBooks?.length === 0 ? (
-        <Alert severity="info">No books found matching the current filters</Alert>
+        <Alert data-testid="no-books-found" severity="info">
+          No books found matching the current filters
+        </Alert>
       ) : (
         filteredBooks?.map((book) => <BookCard key={book.id} book={book} />)
       )}

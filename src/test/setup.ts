@@ -1,5 +1,10 @@
 //
 
+import * as matchers from '@testing-library/jest-dom/matchers';
+import { expect } from 'vitest';
+
+expect.extend(matchers);
+
 import { afterEach, beforeEach } from 'vitest';
 import { makeServer } from '~/server';
 

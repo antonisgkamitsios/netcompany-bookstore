@@ -11,7 +11,7 @@ type BookCardProps = {
 
 function BookCard({ book }: BookCardProps) {
   return (
-    <Card sx={{ width: 300 }}>
+    <Card sx={{ width: 300 }} data-testid="book-card">
       <CardActionArea sx={{ height: '100%' }} component={Link} to={`${book.id}`}>
         <CardMedia
           component="img"
