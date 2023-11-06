@@ -61,7 +61,7 @@ it('should update a book', async () => {
   expect(bookResult.current.data).toEqual(expect.objectContaining(dataToUpdate));
 });
 
-it.only('should create a book', async () => {
+it('should create a book', async () => {
   const { result } = renderQueryHook(() => useCreateBook());
 
   const bookToCreate: Book = {
