@@ -4,6 +4,7 @@ import { Book } from '../types';
 
 import { findUnique } from '~/utils/utilities';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 function fetchBooks(): Promise<{ books: Book[] }> {
   return axios.get('/api/books').then(({ data }) => data);
@@ -17,7 +18,12 @@ function fetchBook({
 }
 
 function createBook(payload: Book): Promise<{ book: Book }> {
-  return axios.post('/api/books', payload).then(({ data }) => data);
+  return axios
+    .post('/api/books', {
+      ...payload,
+      published: dayjs(payload.published, 'DD-MM-YYYY').format('YYYY-MM-DDTHH:mm:ssZ[Z]'),
+    })
+    .then(({ data }) => data);
 }
 
 function deleteBook(id: string) {

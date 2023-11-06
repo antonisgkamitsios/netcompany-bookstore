@@ -7,7 +7,7 @@ import { renderHook } from '@testing-library/react';
 import { useBreadCrumb } from '~/hooks/useBreadcrumb';
 import userEvent from '@testing-library/user-event';
 
-function render(ui: React.ReactElement, options: Parameters<typeof baseRender>[1]) {
+function render(ui: React.ReactElement, options?: Parameters<typeof baseRender>[1]) {
   return {
     ...baseRender(ui, options),
     user: userEvent.setup(),

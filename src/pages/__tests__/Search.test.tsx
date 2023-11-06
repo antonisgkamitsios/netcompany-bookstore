@@ -79,7 +79,7 @@ it('should display correct books when publisher filter is applied', async () => 
 
   // clear the selected publisher
   await user.click(selectPublisher);
-  await user.click(screen.getByText(/none/i));
+  await user.click(screen.getByText(/all/i));
 
   // expect all the books to be in the document
   dummyBooks.books.forEach((book) => expect(screen.getByText(book.title)).toBeInTheDocument());
@@ -105,7 +105,7 @@ it('should display correct books when author filter is applied', async () => {
 
   // clear the selected publisher
   await user.click(selectAuthor);
-  await user.click(screen.getByText(/none/i));
+  await user.click(screen.getByText(/all/i));
 
   // expect all the books to be in the document
   dummyBooks.books.forEach((book) => expect(screen.getByText(book.title)).toBeInTheDocument());

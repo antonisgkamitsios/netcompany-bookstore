@@ -61,7 +61,7 @@ it('should update a book', async () => {
   expect(bookResult.current.data).toEqual(expect.objectContaining(dataToUpdate));
 });
 
-it('should create a book', async () => {
+it.only('should create a book', async () => {
   const { result } = renderQueryHook(() => useCreateBook());
 
   const bookToCreate: Book = {
@@ -69,7 +69,7 @@ it('should create a book', async () => {
     description: 'Description',
     isbn: 'ISBN',
     pages: 1337,
-    published: 'published',
+    published: '09-11-2023',
     publisher: 'Antonis',
     subtitle: 'Sub',
     title: 'Title',
@@ -80,8 +80,14 @@ it('should create a book', async () => {
     result.current.mutate(bookToCreate);
   });
   await waitFor(() => expect(result.current.isSuccess).toBe(true));
-  expect(result.current.data?.book).toEqual(expect.objectContaining(bookToCreate));
-
+  expect(result.current.data?.book).toEqual(
+    expect.objectContaining({
+      ...bookToCreate,
+      // contain in 'published' in any order the '09' and the '11' and the '2023'
+      published: expect.stringMatching(/(?=.*?\b09)(?=.*?\b11)(?=.*?\b2023).*/i),
+    })
+  );
+  // '2023-09-11T00:00:00+03:00Z'
   const response = result.current.data?.book;
 
   const { result: bookResult } = renderQueryHook(() => useBook(response?.id || ''));

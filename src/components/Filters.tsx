@@ -40,7 +40,7 @@ function Filter<T extends FilterWithId>({ label, name, isLoading, options }: Fil
         onChange={handleChange}
       >
         <MenuItem value="">
-          <em>None</em>
+          <em>All</em>
         </MenuItem>
         {options.map((val) => (
           <MenuItem value={val[name]} key={val.id}>

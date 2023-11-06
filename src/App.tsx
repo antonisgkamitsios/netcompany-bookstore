@@ -4,6 +4,7 @@ import { Root } from './pages/Root';
 import { NotFound } from './pages/NotFound';
 import { Search } from './pages/Search';
 import { BookDetails } from './pages/BookDetails';
+import { AddBook } from './pages/AddBook';
 
 export const routes: RouteObject[] = [
   {
@@ -24,7 +25,8 @@ export const routes: RouteObject[] = [
             path: '',
             element: <Search />,
           },
-          { id: 'Details', path: ':id', element: <BookDetails /> },
+          { id: 'Details', path: 'book/:id', element: <BookDetails /> },
+          { id: 'Add Book', path: 'add-book', element: <AddBook /> },
         ],
       },
       { path: 'page-not-found', element: <NotFound />, id: 'Not Found' },
