@@ -1,7 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import { expect, it } from 'vitest';
 import { Search } from '../Search';
+
+import { render } from '~/test/utilities';
 
 import { QueryClientWrapper } from '~/test/utilities';
 import { MemoryRouter } from 'react-router-dom';
@@ -36,8 +37,7 @@ it('should display all the books on the initial load', async () => {
 });
 
 it('should display correct books when search query is applied', async () => {
-  const user = userEvent.setup();
-  render(<Search />, { wrapper });
+  const { user } = render(<Search />, { wrapper });
 
   // wait fot books to load
   await waitFor(() => expect(screen.getByTestId('book-list')).toBeInTheDocument());
@@ -60,8 +60,7 @@ it('should display correct books when search query is applied', async () => {
 });
 
 it('should display correct books when publisher filter is applied', async () => {
-  const user = userEvent.setup();
-  render(<Search />, { wrapper });
+  const { user } = render(<Search />, { wrapper });
 
   const publisher = 'No Starch Press';
 
@@ -87,8 +86,7 @@ it('should display correct books when publisher filter is applied', async () => 
 });
 
 it('should display correct books when author filter is applied', async () => {
-  const user = userEvent.setup();
-  render(<Search />, { wrapper });
+  const { user } = render(<Search />, { wrapper });
 
   const author = 'Kyle Simpson';
 
@@ -113,6 +111,33 @@ it('should display correct books when author filter is applied', async () => {
   dummyBooks.books.forEach((book) => expect(screen.getByText(book.title)).toBeInTheDocument());
 });
 
-it.todo('should display the correct values when search + filters are applied', async () => {
+it('should display the correct values when search + filters are applied', async () => {
   expect.hasAssertions();
+
+  const publisher = 'No Starch Press';
+  const author = 'Marijn Haverbeke';
+  const search = 'eloquent';
+
+  const { user } = render(<Search />, { wrapper });
+
+  await waitFor(() => expect(screen.getByTestId('book-list')).toBeInTheDocument());
+
+  const searchBar = screen.getByLabelText(/search/i);
+  const publisherSelect = screen.getByLabelText(/publisher/i);
+  const authorSelect = screen.getByLabelText(/author/i);
+
+  await user.click(publisherSelect);
+  await user.click(screen.getByText(publisher));
+
+  await user.click(authorSelect);
+  await user.click(screen.getByText(author));
+
+  await user.type(searchBar, search);
+
+  const filteredBooks = dummyBooks.books.filter(
+    (book) => book.author === author && book.publisher === publisher && book.title.toLowerCase().includes(search)
+  );
+
+  await waitFor(() => expect(screen.getAllByTestId('book-card').length).toBe(filteredBooks.length));
+  filteredBooks.forEach((book) => expect(screen.getByText(book.title)).toBeInTheDocument());
 });
