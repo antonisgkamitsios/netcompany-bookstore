@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { dummyBooks } from '~/test/dummyData';
+
+import dummyBooks from '~/books.json';
 import { findUnique } from '../utilities';
 
 const uniquePublishers = [

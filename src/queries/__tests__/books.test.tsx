@@ -3,7 +3,8 @@ import { expect, it } from 'vitest';
 import { useBook, useBooks, useCreateBook, useDeleteBook, useUpdateBook } from '../books';
 
 import { renderQueryHook } from '~/test/utilities';
-import { dummyBooks } from '~/test/dummyData';
+
+import dummyBooks from '~/books.json';
 import { act } from 'react-dom/test-utils';
 import { Book } from '~/types';
 

@@ -8,7 +8,7 @@ import { QueryClientWrapper } from '~/test/utilities';
 import { MemoryRouter } from 'react-router-dom';
 import { PropsWithChildren } from 'react';
 
-import { dummyBooks } from '~/test/dummyData';
+import dummyBooks from '~/books.json';
 import { FilterProvider } from '~/contexts/FilterProvider';
 
 function wrapper({ children }: PropsWithChildren) {
