@@ -17,6 +17,7 @@ function Layout({ children }: PropsWithChildren) {
         sx={{
           mt: `${height}px`,
           pb: 4,
+          px: 2,
           overflow: 'hidden',
           maxWidth: 1400,
           mx: 'auto',

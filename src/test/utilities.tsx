@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { render as baseRender } from '@testing-library/react';
 import { MemoryRouter, RouteObject } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';

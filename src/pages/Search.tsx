@@ -22,7 +22,7 @@ function Search() {
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Filters />
           <Tooltip title={<Typography variant="body2">Add new book</Typography>}>
-            <Fab color="success" aria-label="add" component={Link} to="add-book">
+            <Fab color="success" aria-label="add" data-testid="add-book" component={Link} to="add-book">
               <AddIcon />
             </Fab>
           </Tooltip>

@@ -13,7 +13,15 @@ function BookList({ search }: { search: string }) {
 
   if (books.isLoading) {
     return (
-      <Stack data-testid="loading" direction="row" flexWrap="wrap" gap={2} maxWidth={1400} margin="auto">
+      <Stack
+        data-testid="loading"
+        direction="row"
+        flexWrap="wrap"
+        gap={2}
+        maxWidth={1400}
+        margin="auto"
+        justifyContent="center"
+      >
         {[...Array(8)].map((_, index) => (
           <Skeleton key={index} variant="rectangular" width={300} height={300} />
         ))}

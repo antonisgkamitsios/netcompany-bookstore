@@ -9,6 +9,7 @@ import { useBreadCrumb } from '../hooks/useBreadcrumb';
 
 function Root() {
   const flattRoutes = useBreadCrumb(routes);
+
   return (
     <Layout>
       <Box sx={{ mt: 2 }}>
