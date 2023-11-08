@@ -3,7 +3,7 @@ import { QueryFunctionContext, useMutation, useQuery, useQueryClient } from '@ta
 import { Book } from '../types';
 
 import { findUnique } from '~/utils/utilities';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 
 function fetchBooks(): Promise<{ books: Book[] }> {
@@ -44,7 +44,7 @@ function useBook(id: string) {
 
 function useCreateBook() {
   const queryClient = useQueryClient();
-  return useMutation({
+  return useMutation<{ book: Book }, AxiosError<Book>, Book>({
     mutationFn: createBook,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [{ scope: 'books' }] });

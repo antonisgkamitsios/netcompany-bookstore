@@ -1,11 +1,17 @@
+import { PropsWithChildren } from 'react';
+
+import { screen, waitFor } from '@testing-library/react';
+import { expect, it } from 'vitest';
+import { UserEvent } from '@testing-library/user-event';
+
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { PropsWithChildren } from 'react';
-import { expect, it } from 'vitest';
-import { QueryClientWrapper, render } from '~/test/utilities';
 import { AddBook } from '../AddBook';
-import { screen, waitFor } from '@testing-library/react';
-import { UserEvent } from '@testing-library/user-event';
+
+import { QueryClientWrapper, render } from '~/test/utilities';
+import { server } from '~/test/setup';
+
+import { Response } from 'miragejs';
 
 function wrapper({ children }: PropsWithChildren) {
   return (
@@ -130,4 +136,44 @@ it('should display the correct errors', async () => {
   await expectInputError(user, inputs.pagesInput, '10000');
 
   await expectInputError(user, inputs.isbnInput, 'Something more than thirteen characters');
+});
+
+// sad path :(
+it('should display error message when server goes bad', async () => {
+  // make the server to throw 500
+  server.post('/books', () => new Response(500));
+
+  const { user } = render(<AddBook />, { wrapper });
+
+  const inputs = {
+    titleInput: screen.getByLabelText(/title/i),
+    descriptionInput: screen.getByLabelText(/description/i),
+    authorInput: screen.getByLabelText(/author/i),
+    publishedInput: screen.getByLabelText(/published/i),
+    publisherInput: screen.getByLabelText(/publisher/i),
+    pagesInput: screen.getByLabelText(/pages/i),
+    isbnInput: screen.getByLabelText(/isbn/i),
+  };
+
+  const submitButton = screen.getByRole('button', { name: /create book/i });
+
+  expect(inputs.pagesInput).not.toHaveValue();
+  await user.type(inputs.titleInput, 'One Piece, Vol. 1');
+  await user.type(inputs.descriptionInput, 'One piece');
+  await user.type(inputs.authorInput, 'Eiichiro Oda');
+  await user.type(inputs.publishedInput, '22-07-1997');
+  await user.type(inputs.publisherInput, 'Viz Media, Subs. of Shogakukan Inc');
+  await user.type(inputs.pagesInput, '216');
+  await user.type(inputs.isbnInput, '9781569319017');
+
+  await user.click(submitButton);
+
+  expect(submitButton).toBeDisabled();
+
+  await waitFor(() => expect(screen.getByTestId('error-message')).toBeInTheDocument());
+
+  // verify that the values are cleared after the submit
+  (Object.keys(inputs) as (keyof typeof inputs)[]).forEach((key) => {
+    expect(inputs[key]).toHaveValue();
+  });
 });

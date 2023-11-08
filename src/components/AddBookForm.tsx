@@ -19,6 +19,8 @@ function AddBookForm() {
     handleSubmit,
     control,
     reset,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<BookWithoutId>();
 
@@ -27,6 +29,14 @@ function AddBookForm() {
     createBook.mutate(data, {
       onSuccess: () => {
         reset();
+      },
+      onError: (err) => {
+        // handle the server errors and display them in the form
+        if (Number(err.response?.status) >= 500) {
+          setError('root', { type: 'custom', message: 'Something went wrong💀. Please try again later.' });
+        }
+        // we could handle here also the errors that start with 400 eg a name is duplicate or whatever and a cool idea
+        // is to put the error that might come from server as "name": ["This field is already used"] to the form's state
       },
     });
   });
@@ -136,6 +146,13 @@ function AddBookForm() {
         <Snackbar data-testid="success-message" open autoHideDuration={3000} onClose={() => createBook.reset()}>
           <Alert onClose={() => createBook.reset()} severity="success" sx={{ width: '100%' }}>
             The book was created successfully
+          </Alert>
+        </Snackbar>
+      )}
+      {errors.root && (
+        <Snackbar data-testid="error-message" open autoHideDuration={3000} onClose={() => clearErrors('root')}>
+          <Alert onClose={() => clearErrors('root')} severity="error" sx={{ width: '100%' }}>
+            {errors.root.message}
           </Alert>
         </Snackbar>
       )}
