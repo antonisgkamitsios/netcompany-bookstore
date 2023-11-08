@@ -23,7 +23,9 @@ function BookList({ search }: { search: string }) {
 
   if (books.error instanceof Error) {
     return (
-      <Alert severity="error">Something wrong has happened and we could not retrieve the books at the moment</Alert>
+      <Alert data-testid="error-message" severity="error">
+        Something wrong has happened and we could not retrieve the books at the moment
+      </Alert>
     );
   }
 

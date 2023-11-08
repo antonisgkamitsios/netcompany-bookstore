@@ -10,6 +10,8 @@ import { PropsWithChildren } from 'react';
 
 import dummyBooks from '~/books.json';
 import { FilterProvider } from '~/contexts/FilterProvider';
+import { server } from '~/test/setup';
+import { Response } from 'miragejs';
 
 function wrapper({ children }: PropsWithChildren) {
   return (
@@ -140,4 +142,13 @@ it('should display the correct values when search + filters are applied', async 
 
   await waitFor(() => expect(screen.getAllByTestId('book-card').length).toBe(filteredBooks.length));
   filteredBooks.forEach((book) => expect(screen.getByText(book.title)).toBeInTheDocument());
+});
+
+// sad path
+it('should display an error message when something goes wrong', async () => {
+  server.get('/books', () => new Response(400));
+
+  render(<Search />, { wrapper });
+
+  await waitFor(() => expect(screen.getByTestId('error-message')).toBeInTheDocument());
 });

@@ -18,3 +18,5 @@ beforeEach(() => {
 afterEach(() => {
   server.shutdown();
 });
+
+export { server };
