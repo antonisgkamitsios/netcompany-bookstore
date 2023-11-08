@@ -1,5 +1,5 @@
-import { Stack } from '@mui/material';
 import { Navigate, useParams } from 'react-router-dom';
+import { Stack } from '@mui/material';
 import { BookDetail } from '~/components/BookDetail';
 
 function BookDetails() {
@@ -15,10 +15,9 @@ function BookDetails() {
     my if, so I would write them on top and now I have code that will be executed even
     if my component will never render (the bookId is not a number)
   */
-
   return (
     <Stack textAlign="center" gap={2} alignItems="center">
-      <BookDetail />
+      <BookDetail id={bookId} />
     </Stack>
   );
 }

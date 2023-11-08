@@ -12,7 +12,7 @@ function Root() {
 
   return (
     <Layout>
-      <Box sx={{ mt: 2 }}>
+      <Box sx={{ my: 2 }}>
         <BreadCrumbs routes={flattRoutes} />
       </Box>
       <Outlet />
