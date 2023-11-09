@@ -21,7 +21,7 @@ function createBook(payload: Book): Promise<{ book: Book }> {
   return axios
     .post('/api/books', {
       ...payload,
-      published: dayjs(payload.published, 'DD-MM-YYYY').format('YYYY-MM-DDTHH:mm:ssZ[Z]'),
+      published: dayjs(payload.published, 'DD-MM-YYYY').format('YYYY-MM-DDTHH:mm:ss[Z]'),
     })
     .then(({ data }) => data);
 }
