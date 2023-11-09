@@ -16,7 +16,7 @@ function BookDetails() {
     if my component will never render (the bookId is not a number)
   */
   return (
-    <Stack textAlign="center" gap={2} alignItems="center">
+    <Stack textAlign="center" gap={2} alignItems="center" maxWidth={1000} mx="auto">
       <BookDetail id={bookId} />
     </Stack>
   );

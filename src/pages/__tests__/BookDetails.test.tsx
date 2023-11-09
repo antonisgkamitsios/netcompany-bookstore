@@ -8,6 +8,7 @@ import { books } from '~/books.json';
 import { screen, waitFor } from '@testing-library/react';
 import { server } from '~/test/setup';
 import { Response } from 'miragejs';
+import { Book } from '~/types';
 
 function wrapper({ children, id }: PropsWithChildren<{ id: string }>) {
   return (
@@ -22,24 +23,34 @@ function wrapper({ children, id }: PropsWithChildren<{ id: string }>) {
 }
 
 it('should display the book', async () => {
-  const bookId = '4';
+  const bookId = 4;
 
-  render(<BookDetails />, { wrapper: ({ children }) => wrapper({ children, id: bookId }) });
+  render(<BookDetails />, { wrapper: ({ children }) => wrapper({ children, id: String(bookId) }) });
 
   // verify that the book details are loading
   expect(screen.getByTestId('loading')).toBeInTheDocument();
 
-  // pretty bad but the json data don't have id in them so we assume the 4th book will have id 3
-  const bookWithId4 = books[3];
+  // the json data don't have id in them so we assume the book with id 4 will be the (4-1) elem in the array
+  const bookWithId4 = books[bookId - 1];
   // verify that the book is loaded
   await waitFor(() => expect(screen.getByText(bookWithId4.title)).toBeInTheDocument());
+
+  // verify that the details are loaded
+
+  (Object.keys(bookWithId4) as (keyof typeof bookWithId4)[]).forEach((key) => {
+    if (key === 'published') {
+      expect(screen.getByText(new RegExp(key, 'i'))).toBeInTheDocument();
+    } else {
+      expect(screen.getByText(bookWithId4[key])).toBeInTheDocument();
+    }
+  });
 });
 
 it('should display an error message when something goes wrong', async () => {
-  const bookId = '4';
+  const bookId = 4;
   server.get('/books/:id', () => new Response(500));
 
-  render(<BookDetails />, { wrapper: ({ children }) => wrapper({ children, id: bookId }) });
+  render(<BookDetails />, { wrapper: ({ children }) => wrapper({ children, id: String(bookId) }) });
 
   // verify that the book details are loading
   expect(screen.getByTestId('loading')).toBeInTheDocument();

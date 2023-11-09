@@ -15,6 +15,7 @@ const queryClient = new QueryClient();
 
 // mock server, data are stored in memory
 makeServer();
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
