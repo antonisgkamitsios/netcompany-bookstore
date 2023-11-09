@@ -8,7 +8,6 @@ import { books } from '~/books.json';
 import { screen, waitFor } from '@testing-library/react';
 import { server } from '~/test/setup';
 import { Response } from 'miragejs';
-import { Book } from '~/types';
 
 function wrapper({ children, id }: PropsWithChildren<{ id: string }>) {
   return (
